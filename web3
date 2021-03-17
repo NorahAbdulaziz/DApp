@@ -1,0 +1,14 @@
+import web3 from './web3';
+
+//contract address
+const address = '0x0..................';
+//use the ABI from your contract
+const abi = [
+	{
+		"constant": false,
+		"inputs": [
+    
+			...
+	}
+]
+export default new web3.eth.Contract(abi, address);
