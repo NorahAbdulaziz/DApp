@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import Popup from "reactjs-popup";
 import './App.css';
 import './index.css';
-//import web3 from './web3';
 import ipfs from './ipfs';
 import storehash from './storehash';
 import firebase  from './firebase';
 import {storage,db} from './firebase';
 
-//import { DocumentReference } from '@google-cloud/firestore';
 
 
 export class AddDocument extends Component {
@@ -22,7 +20,7 @@ export class AddDocument extends Component {
 
     
     state = {
-     Documents:[],
+      Documents:[],
       condition:'',
       ipfsHash:null,
       buffer:'',
@@ -31,16 +29,14 @@ export class AddDocument extends Component {
       doc:'',
       b:"",
 
-    idu:" ",
-    key:'',
-    description:'',
-    fields: {},
-    errors: {},
-    touched: {},
-    formSubmitted: false,
-    e:"",
-    arrsign:[],
-    arrsigni:[]
+      idu:" ",
+      fields: {},
+      errors: {},
+      touched: {},
+      formSubmitted: false,
+      e:"",
+      arrsign:[],
+      arrsigni:[]
 
     
   
@@ -48,29 +44,14 @@ export class AddDocument extends Component {
  
   submitData=async(event) =>{
  
-    //event.preventDefault();
-  
-        //const db = firebase.firestore();
- 
- //his.toCloudstorage();
- 
         const FieldValue = db.FieldValue;
-       // const userReff = firebaseRef.child("keywords");
+      
 
-        const collectionRef = db.collection("content");
-        const collectionRef2 = db.collection("keywords");
-
-       // const snapshot = await collectionRef.where('patientId', '==',  this.buf2hex(this.state.id)).get();
-        
+        const collectionRef = db.collection("content");        
         
  var docname;
  
- 
-       // if(snapshot.empty){// not exist
         
-          console.log("in if");
-         // db.collection("content").doc(this.buf2hex(this.state.id)).set({
-          console.log(this.state.des);
           var w=0;
         
              const userRef = await db.collection("content").add({
@@ -80,128 +61,51 @@ export class AddDocument extends Component {
 
                 }); 
                 let writeCount = 0;
-                //const  str = this.buf2hex(this.state.key);
-                const  str =this.state.fields.fileKey;
-                console.log(str);
 
-                //this.state.fields.fileKey;
                 var myArray = str.split(' ');
                 var eccrypto = require("eccrypto");
          
-               
-                //console.log(con);//content
-              var publicKey = Buffer.from([4, 86, 82, 58, 244, 11, 140, 41, 132, 245, 184, 162, 163, 98, 49, 119, 168, 235, 252, 50, 6, 91, 147, 191, 190, 61, 65, 63, 101, 164, 132, 213, 188, 106, 26, 203, 171, 215, 240, 151, 7, 193, 10, 151, 103, 107, 1, 135, 117, 225, 5, 41, 55, 57, 18, 205, 98, 178, 82, 135, 170, 111, 188, 98, 57],'hex');
-              var privateKey= Buffer.from([238, 239, 199, 101, 188, 134, 13, 13, 195, 172, 125, 168, 225, 189, 72, 148, 225, 200, 127, 218, 204, 11, 150, 146, 180, 243, 195, 109, 200, 119, 50, 20],'hex');
+              var publicKey = Buffer.from([4, 86, 82, 58, 244, 11, 140, 41, 132, 245, 184, 162, 163, 98, 49, 119, 168, 235, 252, 50, 6, 91, 147, 191, 190, 61, 65, 63, 101, 164, 132, 213, 188, 106, 26, 203, 171, 215, 240, 151, 7, 193, 10, 151, 103, 107, 1, 135, 117, 225, 5, 41, 55, 57, 18, 205, 98, 178, 82, 135, X, X, X, X, X],'hex');
+              var privateKey= Buffer.from([238, 239, 199, 101, 188, 134, 13, 13, 195, 172, 125, 168, 225, 189, 72, 148, 225, 200, 127, 218, 204, 11, 150, 146, 180, 243, 195, X, X, X, X, X],'hex');
               
-               // console.log(str);
 
-                //str.split(" ");
-                //const splitStr: string[] = str.split("\\s");
+
                 console.log(myArray[0]);
                 const arrsign =[] ;
                 const arrsigni =[] ;
 
-              //const promises: Promise<DocumentReference>[] = [];
-              //const key=await this.signkey(eccrypto,privateKey,this.state.fields.fileKey);
-              //this.setState({key});
+            
                 myArray.forEach(async(value: string) =>  {
-                //const arrsign = await myArray.map((v) => 
+       
                  const r=  await this.signkey(eccrypto,privateKey,value);
                  arrsign.push(r);
                  this.setState({
                   arrsign});
                 
-                 console.log(r);
-
-                //});
-                console.log("async outside",this.state.arrsign);
-
-              // this.state.arrsign.forEach(async(value: string) => {
-                //const arrsign = await myArray.map((v) => 
+              
                 const ru= await this.buf2hex(r);
                 arrsigni.push(ru);
                 this.setState({
                   arrsigni});
 
-                 console.log("jjj:",this.state.arrsigni);
-                 console.log("ru:",ru);
-
-                 //const promises: Promise<DocumentReference>[] = [];
-
-                 await db.collection("keywords").add({
-                // promises.push(db.collection('keywords').add({ 
-                  ipfsHash: this.state.ipfsHash,
-                 key:ru});
-               //  this.state.fields.fileKey}));
-               writeCount++;
-               console.log("jworfjj:");
-
-               //});
-              });
-                
-                //const arrsign2 = await arrsign.map((v) =>  this.buf2hex(v));
-                //console.log(arrsign2);
-                
-
 
                 const promises: Promise<DocumentReference>[] = [];
 
                 this.state.arrsigni.forEach((value: string) => {
-                  //const snapshot =  collectionRef2.where('keywords', '==',value);
-    //if (snapshot.empty) {
-      console.log(value);
-                 // if(value)
-                  promises.push(db.collection('keywords').add({ 
-                     ipfsHash: this.state.ipfsHash,
-                    key:arrsigni[writeCount]}));
-                  //  this.state.fields.fileKey}));
-                  writeCount++;
-    }
+               
+                #TO BE COMPLETE
+                
+                 }
                 );
-    //else{
-     // FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-     // final DatabaseReference myRef = database.getReference("message");
-//myRef.push().setValue("SOME STRING");
-       // var pathReference = firebase.database().ref('keywords').child('key').push().key;
-       // console.log(pathReference);
-        //setValue("user2");
-
-      //var postsRef = db.collection('keywords').doc("j");
-      //.push();
-     // collectionRef2.push().setValue("jjj");
-     //console.log("jj");
-      //firebase.database().ref('/keywords').push("bbbbbbb"); // This will push your data in foo.acb.-L6aZ0...
-
-      //postsRef.push().setValue("jjj");
-      //postsRef.add({ 
-//w++;
-//ipfsHash: this.state.ipfsHash
-    
-    //  });
-   // }
-  //})
-             //   const userRef2 = await db.collection("keywords").add({
-                 // ipfsHash: this.state.ipfsHash,
-                 // key:this.state.fields.fileKey
-    
-                 //   }); 
+   
  
-                console.log("store in DB");
-                console.log(this.state.transactionHash);
-
-          
               var condition,w;
               if(this.state.transactionHash===null){
                 condition='2';
-               //w="تمت إضافة الملف"
-               //this.makeAlert(w)
               }
               else{
                condition='1';
- 
-            // w="خطأ في إضافة الملف"
-               //this.makeAlert(w)
+             
               }
         this.setState({condition});
             }
@@ -221,40 +125,9 @@ return id;
     
     }
 
-    signkey =async(eccrypto,privateKey ,i)=>{
-      console.log(i);
-  
-      var sigkey,key;
-      await eccrypto.sign(privateKey, i).then(function(sig){
-        sigkey=sig;
-          console.log(sig);
-        });
-      key= sigkey; 
-      console.log(key);
-  return key;
-      
-      }
-
-      signdes =async(eccrypto,privateKey ,i)=>{
-        console.log(i);
-    
-        var sigdes,description;
-        await eccrypto.sign(privateKey, i).then(function(sig){
-          sigdes=sig;
-            console.log(sig);
-          });
-        description= sigdes; 
-        console.log(description);
-    return description;
-        
-        }
- 
  
  captureFile = (event) => {
-        // event.stopPropagation();
-         //event.preventDefault();
-         
-
+     
          const file = document.getElementById("fileName").files[0];
          console.log(file);
  
@@ -267,39 +140,8 @@ return id;
        };
  
        toEncryptFile = async(reader) => {
- 
-         var r,content;
-         var eccrypto = require("eccrypto");
-         
-           const con=reader.result;
-           //console.log(con);//content
-         var publicKey = Buffer.from([4, 86, 82, 58, 244, 11, 140, 41, 132, 245, 184, 162, 163, 98, 49, 119, 168, 235, 252, 50, 6, 91, 147, 191, 190, 61, 65, 63, 101, 164, 132, 213, 188, 106, 26, 203, 171, 215, 240, 151, 7, 193, 10, 151, 103, 107, 1, 135, 117, 225, 5, 41, 55, 57, 18, 205, 98, 178, 82, 135, 170, 111, 188, 98, 57],'hex');
-         var privateKey= Buffer.from([238, 239, 199, 101, 188, 134, 13, 13, 195, 172, 125, 168, 225, 189, 72, 148, 225, 200, 127, 218, 204, 11, 150, 146, 180, 243, 195, 109, 200, 119, 50, 20],'hex');
-         
-         
-            await eccrypto.encrypt(publicKey, Buffer.from(con)).then(function(encrypted) {
-             r=encrypted;
-           //console.log(r)//change
-         
-             content = JSON.stringify(r)
-         
-           //console.log(content)//same what i want. change
-         
-                 });
-         
-         const doc=content;
-         this.setState({doc});
-         
-         const idu=await this.signId(eccrypto,privateKey,this.state.fields.id);
-         this.setState({idu});
-
-         //const key=await this.signkey(eccrypto,privateKey,this.state.fields.fileKey);
-         //this.setState({key});
-         console.log(this.state.fields.fileDes);
-         const des=await this.signdes(eccrypto,privateKey,this.state.fields.fileDes);
-         this.setState({des});
-
-         await this.toBuffer();
+       
+         #TO BE COMPLETE
          
          };
          
@@ -312,23 +154,20 @@ return id;
   toBuffer = async() => {
    
    const blob = new Blob([this.state.doc],);
-   //console.log(blob);
+  
  
    this.setState({blob});
   
    var ft=await blob.text();
  
-    // console.log(ft);
+ 
     const buffer= Buffer.from(ft);
  
- this.setState({buffer});
-     console.log(this.state.buffer);
-const b=buffer;
-this.setState({b});
-await this.onClick();
-
-    //return this.state.buffer;
-
+    this.setState({buffer});
+    console.log(this.state.buffer);
+    const b=buffer;
+    this.setState({b});
+    await this.onClick();
  
    };
  
@@ -336,35 +175,16 @@ await this.onClick();
  onClick = async (event) => {
  
    console.log("onsubmit");
-      // event.preventDefault();
    
-      //bring in user's metamask account address
    const accounts = await window.ethereum.enable();
    var e=false;
 
- //var bu=await this.toBuffer();
- 
-  console.log(this.state.b);
- 
-
-       console.log('Sending from Metamask account: ' + accounts[0]);
-     //obtain contract address from storehash.js
        const ethAddress= await storehash.options.address;
        this.setState({ethAddress});
        console.log(ethAddress);
-    
-   
-     //save document to IPFS,return its hash#, and set hash# to state
-     //https://github.com/ipfs/interface-ipfs-core/blob/master/SPEC/FILES.md#add 
-    // console.log(Buffer.from(this.state.buffer));
-     //console.log(this.buf2hex(this.state.fields.id));
-     console.log(this.state.b);
-     console.log(this.state.idu);
 
      const ipfsHash=await ipfs.add(this.state.b);
       
-
- 
          this.setState({ ipfsHash:ipfsHash[0].hash });
              console.log(this.state.ipfsHash);
              await storehash.methods.isExistp(this.buf2hex(this.state.idu)).call(function (error, result) {
@@ -397,17 +217,16 @@ await this.onClick();
     
  
      await this.toCloudstorage(this.state.blob);
-     //await this.submitData();
- 
+   
         }
       }
  
         toCloudstorage = async(ft) => {
 
-         //event.preventDefault()
+       
          var u,sn;
          console.log('start of upload',ft);
-         //firebase.storage()
+     
          const uploadTask =  await storage.ref(`/${this.state.ipfsHash}`).put(ft).then(function(snapshot) {
        sn=snapshot;
            console.log(snapshot.ref.getDownloadURL(),'Uploaded a blob or file!');
@@ -463,43 +282,11 @@ submituserRegistrationForm=async(e)=> {
 console.log("1");
        this.captureFile();
 
-  
   }
  }
+ 
 validateForm() {
-let fields = this.state.fields;
-  let errors = {};
-  let formIsValid = true;
-  console.log(fields, "fields");
-  
-if (!fields["id"]) {
-    formIsValid = false;
-    errors["id"] = "يجب إدخال رقم الهوية";
-  }
-if (typeof fields["id"] !== "undefined") {
-  if(!fields["id"].match(/^[\u0660-\u0669-\0-9]{10}$/)) {
-    formIsValid = false;
-      errors["id"] = "الرجاء إدخال رقم هوية صحيح";
-    }
-  }
-  if (!fields["fileDes"]) {
-    formIsValid = false;
-    errors["fileDes"] = "يجب إدخال اسم الملف";
-  }
-  if (!fields["fileKey"]) {
-    formIsValid = false;
-    errors["fileKey"] = "يجب إدخال الكملة المفتاحية";
-  }
-  if (!fields["fileName"]) {
-    formIsValid = false;
-    errors["fileName"] = "يجب إختيار ملف";
-  }
-  
-
-this.setState({
-    errors: errors
-  });
-  return formIsValid;
+#TO BE COMPLETE
 }
     
    
@@ -507,120 +294,7 @@ render() {
 
   return (
 
-    <div className="App" id="main-registration-container">
-    <br/>
- <div className="border taj" id="register">
-<br /><br />
-  <p className="h3 colorlog font-weight-bold">إضافة ملف طبي</p>
-  <br /><br />
-        <form  autocomplete="off" method="post"  name="userRegistrationForm"  onSubmit= {this.submituserRegistrationForm} > 
-  <div className="d-flex justify-content-center">
-  <table>
-  <tbody>
-
-    <tr >
-    <td align="right">
-        <input className="text-right col-12 .col-md-8" name="id" type="text" value={this.state.fields.id || ""} 
-        onChange={ (e) => {this.handleChangefield(e);this.validateForm();} }
-            onBlur = {(e) => {this.handleTouch(e);this.validateForm();} } />
-             </td>
-
-            <td align="left">:رقم الهوية </td>
-            </tr>
-          {
-            this.state.formSubmitted || this.state.touched.id
-            ?
-            <div className="errorMsg text-danger">{this.state.errors.id}</div>
-            :
-              null
-          } 
-                    <tr><td><br/></td></tr>
-    <tr>
-      
-    <td align="right">
-      
-          
-               <input className="text-right col-12 .col-md-8"  name="fileDes" type="text" value={this.state.fields.fileDes || ""} 
-        onChange={ (e) => {this.handleChangefield(e);this.validateForm();} }
-            onBlur = {(e) => {this.handleTouch(e);this.validateForm();} } /> 
-
-</td>
-
-<td align="left"> :اسم الملف</td>
-</tr>
-
-       {
-            this.state.formSubmitted || this.state.touched.fileDes
-            ?
-            <div className="errorMsg text-danger">{this.state.errors.fileDes}</div>
-            :
-              null
-          }  
-
-
-<tr >
-    <td align="right">
-        <input className="text-right col-12 .col-md-8" name="fileKey" type="text" value={this.state.fields.fileKey || ""} 
-        onChange={ (e) => {this.handleChangefield(e);this.validateForm();} }
-            onBlur = {(e) => {this.handleTouch(e);this.validateForm();} } />
-             </td>
-
-            <td align="left">الكلمة المفتاحية </td>
-            </tr>
-
-            {
-            this.state.formSubmitted || this.state.touched.fileKey
-            ?
-            <div className="errorMsg text-danger">{this.state.errors.fileKey}</div>
-            :
-              null
-          }  
-
-
-</tbody>    
-  </table>
-  </div>  
-  <br/>
-
-        <input className="col-sm-3" name="fileName" id="fileName" type="file" value={this.state.fields.fileName || ""} 
-        onChange={ (e) => {this.handleChangefield(e);this.validateForm();} }
-            onBlur = {(e) => {this.handleTouch(e);this.validateForm();} } />
-          {
-            this.state.formSubmitted || this.state.touched.fileName
-            ?
-            <div className="errorMsg text-danger">{this.state.errors.fileName}</div>
-            :
-              ''
-          }
-            
-
-  <br/> <br/>
-  <input type="submit" className="btn btn-outline-dark"  value="إضافة"/>
-
-  <br/><br/>
-  </form>
-</div>
-<br /> <br />
-  {this.state.condition==='1'?
-       <Popup 
-       open={true}>
-       تمت إضافة الملف
-     </Popup>
-     :
-    null}
-    {this.state.condition==='2'?
-       <Popup 
-       open={true}>خطأ في إضافة الملف
-     </Popup>
-     :
-    null}
-      {this.state.e===false?
-       <Popup 
-       open={true}>لا يوجد مريض مسجل برقم الهوية
-     </Popup>
-     :
-    null}
-</div>
+   #TO BE COMPLETE
 
     );
   } //render
